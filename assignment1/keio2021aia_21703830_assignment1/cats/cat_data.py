@@ -3,7 +3,7 @@ from . import *
 
 class Cat_Data:
 
-    def __init__(self, data_file_path='', data_file_name='cat_data.pkl'):
+    def __init__(self, data_file_path='../data/', data_file_name='cat_data.pkl'):
 
         self.data = []
         self.train_mean = 0.0
@@ -13,13 +13,19 @@ class Cat_Data:
 
         with open(filepath, 'rb') as f:
             dat = pkl.load(f)
+
         dat = dat["train"]
+
         k = ["no_cat", "cat"]
         for i in k:
+
             for j in dat[i]:
                 if i == "no_cat":
+
                     j = self.standardize(j)
+
                     s = j.flatten().tolist()
+
                     self.data.append([s, 0])
                 else:
                     j = self.standardize(j)
@@ -29,7 +35,6 @@ class Cat_Data:
         self.shuffle()
 
     def __iter__(self):
-
         return self
 
     def __next__(self):

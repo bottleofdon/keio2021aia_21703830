@@ -12,6 +12,7 @@ class Cat_Trainer:
         self.loss = lrloss
 
     def accuracy(self, data):
+
         return 100*float(sum([1 for x, y in next(iter(data)) if self.model.predict(x) == y]))/float(len(data))
 
     def train(self, lr, ne):
@@ -22,13 +23,21 @@ class Cat_Trainer:
 
         costs = []
         accuracies = []
+
         for epoch in range(1, ne+1):
+
             J = 0
+
             for x, y in next(iter(self.dataset)):
+
                 x = np.array(x)
+
                 yhat = self.model(x)
+
                 J += self.loss(yhat, y)
+
                 self.model.w += lr*(y-yhat)*x
+
                 self.model.b += lr*(y-yhat)
 
             J /= len(self.dataset)

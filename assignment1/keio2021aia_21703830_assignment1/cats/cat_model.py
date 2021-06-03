@@ -2,7 +2,7 @@ from . import *
 
 
 class Cat_Model:
-    # initializations
+
     def __init__(self, dimension=1, weights=None, bias=None, activation=(lambda x: x), predict=lrpredict):
 
         self._dim = dimension
@@ -26,11 +26,13 @@ class Cat_Model:
     def __call__(self, x):
 
         yhat = None
+
         yhat = self._a(np.dot(self.w, np.array(x)) + self.b)
 
         return yhat
 
     def preprocess(self, x):
+
         return (x - self.train_mean) / self.train_sd
 
     def load_model(self, file_path):
