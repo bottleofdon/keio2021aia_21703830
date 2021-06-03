@@ -1,5 +1,6 @@
 from . import *
 
+
 class Sonar_Trainer:
 
     def __init__(self, dataset, model):
@@ -10,14 +11,14 @@ class Sonar_Trainer:
 
     def accuracy(self, data):
 
-        return YOUR_CODE
+        return 100*np.mean([1 if self.model.predict(x) == y else 0 for x, y in data])
 
     def train(self, lr, ne):
 
         print("training model on data...")
         accuracy = self.accuracy(self.dataset)
         print("initial accuracy: %.3f" % (accuracy))
-        
+
         costs = []
         accuracies = []
 
@@ -25,20 +26,29 @@ class Sonar_Trainer:
             J = 0
             for x, y in self.dataset:
 
-                YOUR_CODE
+                x = np.array(x)
+                yhat = self.model(x)
+
+                J += self.loss(self.model.predict(x), y)
+
+                self.model.w += lr*(y-yhat)*x
+
+                self.model.b += lr*(y-yhat)
 
             J /= len(self.dataset)
-            
+
             accuracy = self.accuracy(self.dataset)
-            if epoch%10 == 0:
+            if epoch % 10 == 0:
                 print('--> epoch=%d, accuracy=%.3f' % (epoch, accuracy))
             costs.append(J)
             accuracies.append(accuracy)
 
         print("training complete")
         print("final accuracy: %.3f" % (self.accuracy(self.dataset)))
-        
-        costs = list(map(lambda t: np.mean(t), [np.array(costs)[i-10:i+11] for i in range(1, len(costs)-10)]))
-        accuracies = list(map(lambda t: np.mean(t), [np.array(accuracies)[i-10:i+11] for i in range(1, len(accuracies)-10)]))
-        
+
+        costs = list(map(lambda t: np.mean(t), [np.array(costs)[
+                     i-10:i+11] for i in range(1, len(costs)-10)]))
+        accuracies = list(map(lambda t: np.mean(t), [np.array(accuracies)[
+                          i-10:i+11] for i in range(1, len(accuracies)-10)]))
+
         return (costs, accuracies)
