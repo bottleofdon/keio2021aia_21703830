@@ -1,8 +1,9 @@
 from . import *
 
-class Cat_Model:
 
-    def __init__(self, dimension=YOUR_CODE, weights=None, bias=None, activation=(lambda x: x), predict=lrpredict):
+class Cat_Model:
+    # initializations
+    def __init__(self, dimension=1, weights=None, bias=None, activation=(lambda x: x), predict=lrpredict):
 
         self._dim = dimension
         self.w = weights or np.random.normal(size=self._dim)
@@ -25,20 +26,18 @@ class Cat_Model:
     def __call__(self, x):
 
         yhat = None
+        yhat = self._a(np.dot(self.w, np.array(x)) + self.b)
 
-        YOUR_CODE
-            
         return yhat
-    
+
     def preprocess(self, x):
-        
         return (x - self.train_mean) / self.train_sd
 
     def load_model(self, file_path):
 
         with open(file_path, mode='rb') as f:
             mm = pkl.load(f)
-            
+
         self._dim = mm._dim
         self.w = mm.w
         self.b = mm.b
@@ -46,6 +45,6 @@ class Cat_Model:
 
     def save_model(self):
 
-        f = open('results/cat_model.pkl','wb')
+        f = open('results/cat_model.pkl', 'wb')
         pkl.dump(self, f)
         f.close
